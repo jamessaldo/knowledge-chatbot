@@ -28,8 +28,12 @@ class Knowledge(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('question', type=str, required=True)
+        parser.add_argument('auth', type=str, required=True)
         args = parser.parse_args()
         try:
+            if args['auth'] != "INIKODERAHASIA":
+                return rest.response(401, message="FAILED")
+
             answer, max_score, prediction = getApproximateAnswer(args['question'])
             data = {
                 "question": args['question'],

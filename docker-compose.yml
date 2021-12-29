@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  # /gographql
+  knowledge.svc-flask:
+    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-flask:1.0.5
+    working_dir: /app
+    environment:
+      - APP_HOST=0.0.0.0
+      - APP_PORT=5000
+      - FLASK_DEBUG=True
+      - ACL=127.0.0.1/24, 103.77.104.0/24
+      - PYTHONPATH=/workspace
+    ports:
+      - 5000:5000
+    command: ["sh", "run.sh", "server", "development"]
+        

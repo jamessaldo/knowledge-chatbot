@@ -1,7 +1,7 @@
 #!/bin/bash
 
-command=$COMMAND
-env=$ENVIRONMENT
+command=$1
+env=$2
 worker=$WORKER
 
 function rep_ok(){
