@@ -29,10 +29,14 @@ def connect_request(message):
 @socketio.on('question', namespace='/test')
 def question(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
-    payload = dict(question=message['data'], auth='INIKODERAHASIA')
-    r = requests.post('http://knowledge.svc-flask:5000/api/knowledge', data=payload)
-    emit('my_response',
-         {'data': r.json()['data']['answer'], 'count': session['receive_count']})
+    payload = dict(question=message['data'], auth=os.getenv("SECRET_KEY"))
+    r = requests.post(os.getenv("SVC_FLASK_ENDPOINT")+'/api/knowledge', data=payload)
+    if isinstance(r.json()['data']['answer'],str):
+        emit('my_response', {'data': r.json()['data']['answer'], 'count': session['receive_count']})
+    else:
+        for row in r.json()['data']['answer']:
+            emit('my_response', {'data': row, 'count': session['receive_count']})
+            session['receive_count'] = session.get('receive_count', 0) + 1
 
 
 @socketio.on('my_broadcast_event', namespace='/test')

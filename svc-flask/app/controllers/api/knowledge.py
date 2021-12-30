@@ -3,6 +3,11 @@ from flask_restful import reqparse
 from app.helpers import rest
 import json
 from Levenshtein import ratio
+import hashlib
+import os
+
+str2hash = "Bismillah Ghozy mau masuk prosa.ai" + os.getenv("SECRET_KEY_WEBSOCKET")
+result = hashlib.md5(str2hash.encode())
 
 def getApproximateAnswer(q):
     max_score = 0
@@ -21,7 +26,7 @@ def getApproximateAnswer(q):
 
     if max_score > 0.5: # treshold is lowered
         return answer, max_score, prediction
-    return "Sorry, I didn't get you.", max_score, prediction
+    return "Maaf, aku masih belum paham maksud dari kamu itu apa. Mungkin maksud kamu ini?", max_score, prediction
 
 
 class Knowledge(Resource):
@@ -31,7 +36,7 @@ class Knowledge(Resource):
         parser.add_argument('auth', type=str, required=True)
         args = parser.parse_args()
         try:
-            if args['auth'] != "INIKODERAHASIA":
+            if args['auth'] != result.hexdigest():
                 return rest.response(401, message="FAILED")
 
             answer, max_score, prediction = getApproximateAnswer(args['question'])

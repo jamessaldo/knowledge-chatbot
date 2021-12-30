@@ -1,9 +1,0 @@
-stack: "orcinus"
-services:
-    svc-websocket:
-      image: registry.gitlab.com/mayarid/source/<IMG_NAME>
-      auth: true
-      ports:
-        - "5000:5000"
-      #environment:
-      commands: ["sh","run.sh", "server", "production"]

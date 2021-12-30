@@ -10,7 +10,7 @@
             var socket = io(namespace);
 
             socket.on('connect', function() {
-                socket.emit('connect_request', {data: 'connected to the SocketServer...'});
+                socket.emit('connect_request', {data: 'Selamat datang di Covidopedia! Mau tanya apa nih sama Copi?'});
                 $('#connect_disconnect').val('Disconnect Server'); 
             });
 
