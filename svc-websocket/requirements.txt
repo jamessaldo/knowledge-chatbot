@@ -1,0 +1,14 @@
+Flask_Script==2.0.6
+Flask==1.0.2
+requests==2.22.0
+Flask_Cors==3.0.7
+Flask_RESTful==0.3.7
+pytest==4.4.1
+coloredlogs==10.0
+python-dotenv==0.10.3
+netaddr==0.7.19
+Flask-SocketIO==4.3.1
+python-engineio==3.13.2
+python-socketio==4.6.0
+simple-websocket==0.5.0
+eventlet==0.33.0

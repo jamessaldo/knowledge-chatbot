@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-  # /gographql
   knowledge.svc-flask:
+    container_name: knowledge.svc-flask
     image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-flask:1.0.5
     working_dir: /app
     environment:
@@ -10,7 +10,24 @@ services:
       - FLASK_DEBUG=True
       - ACL=127.0.0.1/24, 103.77.104.0/24
       - PYTHONPATH=/workspace
+    volumes:
+      - ./svc-flask:/app
     ports:
       - 5000:5000
     command: ["sh", "run.sh", "server", "development"]
-        
+  knowledge.svc-websocket:
+    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-websocket:1.0.1
+    working_dir: /app
+    environment:
+      - APP_HOST=0.0.0.0
+      - APP_PORT=5001
+      - FLASK_DEBUG=True
+      - ACL=127.0.0.1/24, 103.77.104.0/24
+      - PYTHONPATH=/workspace
+    ports:
+      - 5001:5001
+    depends_on:
+      - knowledge.svc-flask
+    links:
+      - knowledge.svc-flask
+    command: ["sh", "run.sh", "server", "development"]
