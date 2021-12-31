@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   knowledge.svc-flask:
     container_name: knowledge.svc-flask
@@ -33,3 +33,19 @@ services:
     links:
       - knowledge.svc-flask
     command: ["sh", "run.sh", "server", "development"]
+  knowledge.covidopedia:
+    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/covidopedia:1.0.1
+    working_dir: /app
+    environment:
+      - APP_HOST=0.0.0.0
+      - APP_PORT=3000
+      - FLASK_DEBUG=True
+      - ACL=127.0.0.1/24, 103.77.104.0/24
+      - PYTHONPATH=/workspace
+      - SVC_FLASK_ENDPOINT=http://knowledge.svc-flask:5000
+      - SECRET_KEY=604866851210ea5fcd966b8e3f44f985
+    volumes:
+      - "/app/node_modules"
+    ports:
+      - 3000:3000
+    command: ["yarn", "start"]
