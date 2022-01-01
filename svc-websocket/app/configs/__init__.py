@@ -9,3 +9,4 @@ load_dotenv(dotenv_path)
 
 class Config(MetaFlaskEnv):
     ENV_PREFIX = "FLASK_"
+    SECRET_KEY = "tugasnlpghozy"

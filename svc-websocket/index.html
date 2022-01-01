@@ -1,37 +1,46 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
     <title>Socket-Test</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-            var namespace = '/test';
-            var socket = io(namespace);
+        $(document).ready(function () {
+            let socket = io.connect("http://127.0.0.1:5001");
 
-            socket.on('connect', function() {
-                socket.emit('connect_request', {data: 'Selamat datang di Covidopedia! Mau tanya apa nih sama Copi?'});
-                $('#connect_disconnect').val('Disconnect Server'); 
+            socket.on('connect', function () {
+                socket.emit('connect_request', { data: 'Selamat datang di Covidopedia! Mau tanya apa nih sama Copi?' });
+                $('#connect_disconnect').val('Disconnect Server');
             });
 
-            socket.on('my_response', function(msg, cb) {
+            socket.on('my_response', function (msg, cb) {
                 $('#log').append('<br>' + $('<div/>').text('logs #' + msg.count + ': ' + msg.data).html());
                 if (cb)
                     cb();
             });
-            $('form#emit').submit(function(event) {
-                socket.emit('question', {data: $('#emit_data').val()});
-                $('#emit_data').val(''); 
+
+            socket.on('disconnect', function (msg, cb) {
+                $('#log').append('<br>' + $('<div/>').text('Anda tersutup :(').html());
+                if (cb)
+                    cb();
+            });
+
+            $('form#emit').submit(function (event) {
+                socket.emit('question', { data: $('#emit_data').val() });
+                $('#emit_data').val('');
                 return false;
             });
-            $('form#disconnect').submit(function(event) {
+            $('form#disconnect').submit(function (event) {
                 socket.emit('disconnect_request');
-                $('#connect_disconnect').val('Connect to server'); 
                 return false;
+
             });
         });
     </script>
 </head>
+
 <body style="background-color:white;">
 
     <h1 style="background-color:white;">Socket</h1>
@@ -44,6 +53,7 @@
         <input type="submit" id="connect_disconnect" value="Disconnect Server">
     </form>
     <h2 style="background-color:white;">Logs</h2>
-    <div id="log" ></div>
+    <div id="log"></div>
 </body>
+
 </html>
