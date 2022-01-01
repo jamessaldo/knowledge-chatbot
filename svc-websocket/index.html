@@ -15,7 +15,7 @@
                 $('#connect_disconnect').val('Disconnect Server');
             });
 
-            socket.on('my_response', function (msg, cb) {
+            socket.on('message', function (msg, cb) {
                 $('#log').append('<br>' + $('<div/>').text('logs #' + msg.count + ': ' + msg.data).html());
                 if (cb)
                     cb();
