@@ -143,7 +143,7 @@ const Charts = () => {
   }, [vaccine]);
 
   return (
-    <div id="charts" className="text-center">
+    <div id="charts">
       <div className="container" style={{ maxWidth: "1200px" }}>
         <div className="section-title">
           <h2 className="text-center">Charts</h2>
@@ -159,8 +159,8 @@ const Charts = () => {
             </h3>
           </div>
           <br />
-          <div className="logo-chart">
-            <div className="detail-logo konfirmasi">
+          <div className="logo-chart row">
+            <div className="detail-logo konfirmasi col-12 col-sm-4">
               <div className="dot-logo">
                 <i
                   className="fa fa-ambulance fa-2x"
@@ -171,7 +171,7 @@ const Charts = () => {
               <h4>{detailCovid.cases.toLocaleString("en-US")}</h4>
               <p className="detail">Konfirmasi</p>
             </div>
-            <div className="detail-logo meninggal">
+            <div className="detail-logo meninggal col-12 col-sm-4">
               <div className="dot-logo">
                 <i
                   className="fa fa-bed fa-2x"
@@ -182,7 +182,7 @@ const Charts = () => {
               <h4>{detailCovid.deaths.toLocaleString("en-US")}</h4>
               <p className="detail">Meninggal</p>
             </div>
-            <div className="detail-logo sembuh">
+            <div className="detail-logo sembuh col-12 col-sm-4">
               <div className="dot-logo">
                 <i
                   className="fa fa-plus-square  fa-2x"
@@ -195,44 +195,52 @@ const Charts = () => {
             </div>
           </div>
           <br />
-          <div className="chartline">
-            <h3>Perkembangan Vaksin di Indonesia</h3>
+          <div className="chartline h-auto pb-35">
+            <h3 className="text-center">Perkembangan Vaksin di Indonesia</h3>
             {isLoading.loadVaccine ? (
-              "Loading ..."
+              <div className="w-100 text-center m-auto">Loading ...</div>
             ) : (
-              <div className="logo-chart">
-                <div className="row">
-                  <div className="col">
-                    <div
-                      className="panel-body"
-                      style={{ background: "#39CCCC", color: "white" }}
-                    >
-                      {vaccine?.total?.jumlah_vaksinasi_1.toLocaleString(
-                        "en-US"
-                      )}
-                    </div>
-                  </div>
-                  <div className="col">
-                    <div
-                      className="panel-body"
-                      style={{ background: "#39CCCC", color: "white" }}
-                    >
-                      {vaccine?.total?.jumlah_vaksinasi_2.toLocaleString(
-                        "en-US"
-                      )}
-                    </div>
-                  </div>
+              <div className="row mt-20">
+                <div className="col-12 col-sm-5 card-detail-vaccine left d-flex flex-column">
+                  <span>
+                    {vaccine?.total?.jumlah_vaksinasi_1.toLocaleString("en-US")}
+                  </span>
+                  <span>Vaksinasi Ke-1</span>
+                  <span>
+                    +
+                    {vaccine?.penambahan?.jumlah_vaksinasi_1?.toLocaleString(
+                      "en-US"
+                    )}
+                  </span>
+                  <i className="fa fa-syringe" />
+                </div>
+                <div className="col-12 col-sm-5 card-detail-vaccine right d-flex flex-column">
+                  <span>
+                    {vaccine?.total?.jumlah_vaksinasi_2.toLocaleString("en-US")}
+                  </span>
+                  <span>Vaksinasi Ke-2</span>
+                  <span>
+                    +
+                    {vaccine?.penambahan?.jumlah_vaksinasi_2?.toLocaleString(
+                      "en-US"
+                    )}
+                  </span>
+                  <i className="fa fa-syringe" />
                 </div>
               </div>
             )}
           </div>
           <div className="chartline">
-            <h3>10 Negara dengan Kasus Covid-19 Terbanyak</h3>
-            {isLoading.bar
-              ? "Loading ..."
-              : covidBar?.datasets && (
-                  <Bar options={options_bar} data={covidBar} />
-                )}
+            <h3 className="text-center">
+              10 Negara dengan Kasus Covid-19 Terbanyak
+            </h3>
+            {isLoading.bar ? (
+              <div className="w-100 text-center m-auto">Loading ...</div>
+            ) : (
+              covidBar?.datasets && (
+                <Bar options={options_bar} data={covidBar} />
+              )
+            )}
           </div>
         </div>
       </div>

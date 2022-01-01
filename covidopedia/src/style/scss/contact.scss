@@ -1,124 +1,136 @@
 /* Contact Section */
 
 @keyframes gradients {
-    0%   {background-position: 0 0;}
-    25% {background-position: 50% 0;}
-    50% {background-position: 90% 0;}
-    60% {background-position: 60%;}
-    75% {background-position: 40%;}
-    100%  {background-position: 0 0;}
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: 50% 0;
+  }
+  50% {
+    background-position: 90% 0;
+  }
+  60% {
+    background-position: 60%;
+  }
+  75% {
+    background-position: 40%;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 
 #advice {
-	padding: 100px 0 60px 0;
-    background: linear-gradient(-45deg, #ee7752, #e73c7e,#5ca9fb, #6372ff);
-    background-size: 600%;
-    color: rgba(255,255,255,.75);
-    background-position: 0 0;    
-    animation-duration: 15s;
-    animation-iteration-count: infinite;
-    animation-name: gradients;
+  padding: 100px 0 60px 0;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #5ca9fb, #6372ff);
+  background-size: 600%;
+  color: rgba(255, 255, 255, 0.75);
+  background-position: 0 0;
+  animation-duration: 15s;
+  animation-iteration-count: infinite;
+  animation-name: gradients;
 }
 #advice .section-title {
-	margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 #advice p {
-	font-size: 16px;
-    color: #fff;
-    font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
 }
 
 #advice h2 {
-	color: #fff;
-	margin-top: 10px;
-	margin-bottom: 15px;
-	padding-bottom: 15px;
+  color: #fff;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 #advice .section-title h2::after {
-	position: absolute;
-	content: "";
-	background: rgba(255,255,255,.3);
-	height: 4px;
-	width: 60px;
-	bottom: 0;
-	left: 30px;
+  position: absolute;
+  content: "";
+  background: rgba(255, 255, 255, 0.3);
+  height: 4px;
+  width: 60px;
+  bottom: 0;
+  left: 30px;
 }
 #advice h3 {
-	color: #fff;
-	margin-top: 80px;
-	margin-bottom: 25px;
-	padding-bottom: 20px;
-	font-weight: 400;
+  color: #fff;
+  margin-top: 80px;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  font-weight: 400;
 }
 
 #advice {
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+    flex-direction: row;
+    margin-left: 1px;
+  }
+  .col {
+    display: flex;
+    flex: auto;
+    justify-content: space-evenly;
+    padding: 0 4px;
+    img {
+      max-width: 350px;
+      max-height: 350px;
+      margin-bottom: 8;
+    }
+  }
+  @media (max-width: 800px) {
     .row {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0 4px;
-        flex-direction: row;
+      flex-direction: column;
     }
     .col {
-        display: flex;
-        flex:auto;
-        justify-content: space-evenly;
-        padding: 0 4px;
-        img {
-            max-width: 350px;
-            max-height: 350px;
-            margin-bottom: 8;
-        }
+      padding: 0 4px;
+      img {
+        width: 300;
+        height: 300;
+        margin-bottom: 5;
+      }
     }
-    @media (max-width: 800px) {
-        .row {
-            flex-direction: column;
-        }   
-        .col {
-            padding: 0 4px;
-            img {
-                width: 300;
-                height: 300;
-                margin-bottom: 5;
-            }
-        }
-    }
-    
+  }
 }
 
 /* Footer Section*/
 #footer {
-	background: #31385e;
-	padding: 30px 0;
+  background: #31385e;
+  padding: 30px 0;
 }
 #footer h3 {
-	color: #fff;
-    text-align: left;
-    font-weight: 600;
+  color: #fff;
+  text-align: left;
+  font-weight: 600;
 }
 #footer h3 a {
-	color: #ffd000;
-    font-weight: 600;
-    text-align: left;
+  color: #ffd000;
+  font-weight: 600;
+  text-align: left;
 }
 #footer h2 {
-	color: #fff;
-    font-weight: 600;
-    text-align: center;
-    cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
 }
 #footer .container {
-    text-align: center;
-    width: 70%;
-    margin: auto;
-    border-top: 0.5px solid white;
-    border-bottom: 0.5px solid white;
+  text-align: center;
+  width: 70%;
+  margin: auto;
+  border-top: 0.5px solid white;
+  border-bottom: 0.5px solid white;
 }
 #footer p {
-	color: #fff;
-    text-align: left;
-	font-size: 14px;
+  color: #fff;
+  text-align: left;
+  font-size: 14px;
 }
 #footer a {
-	color: #608dfd;
+  color: #608dfd;
 }
