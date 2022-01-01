@@ -1,41 +1,44 @@
+/* eslint-disable */
 import React, { useState, useRef, useEffect } from "react";
+import io from "socket.io-client";
 import MessageBubble from "./components/message-bubble";
 
-const defaultMessages = [
-  {
-    message: "(like outside in the sun).",
-    isCurrentUser: false,
-  },
-  {
-    message: `Make sure the visual focus indicator can be seen by people with low
-    vision. This will also benefit anyone use a screen in a brightly lit
-    space (like outside in the sun).`,
-    isCurrentUser: false,
-  },
-  {
-    message: `This will also benefit anyone use a screen in a brightly lit
-    space (like outside in the sun).`,
-    isCurrentUser: true,
-  },
-  {
-    message: "This will also",
-    isCurrentUser: true,
-  },
-  {
-    message: "(like outside in the sun).",
-    isCurrentUser: false,
-  },
-];
+const ENDPOINT = "http://127.0.0.1:5001";
 
 const PopupChat = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(true);
-  const [messages, setMessages] = useState(defaultMessages);
+  const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isActive, setIsActive] = useState(true);
-
+  const [second, setSecond] = useState(300);
   const inputMessage = useRef(null);
   const containerMessages = useRef(null);
+  const [socket, setSocket] = useState(null);
 
+  const reconnectingSocket = () => {
+    setSecond(300);
+    setSocket(io(ENDPOINT));
+  };
+
+  useEffect(() => {
+    const newSocket = io(ENDPOINT);
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [setSocket]);
+
+  useEffect(() => {
+    const seconds = second;
+    const timer = setInterval(() => {
+      if (second > 0) setSecond(seconds - 1);
+    }, 1000);
+
+    if (typeof second !== "undefined" && second <= 0) {
+      socket.emit("disconnect_request");
+    }
+
+    return () => clearInterval(timer);
+  }, [second]);
+  console.log(second);
   const togglePopupChatbot = () => setIsPopupOpen(!isPopupOpen);
 
   useEffect(() => {
@@ -44,6 +47,38 @@ const PopupChat = () => {
       containerMessages?.current?.scrollHeight
     );
   }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("connect", () => {
+        setIsActive(true);
+        socket.emit("connect_request", {
+          data: "Selamat datang di Covidopedia! Mau tanya apa nih sama Copi?",
+        });
+      });
+
+      socket.on("disconnect", (msg, cb) => {
+        setIsActive(false);
+        setMessages((messages) => [
+          ...messages,
+          {
+            message: "Oops! Sepertinya anda terputus :(",
+            isCurrentUser: false,
+          },
+        ]);
+      });
+
+      socket.on("message", (message) => {
+        setMessages((messages) => [
+          ...messages,
+          {
+            message: message.data,
+            isCurrentUser: false,
+          },
+        ]);
+      });
+    }
+  }, [socket]);
 
   useEffect(() => {
     const shouldScroll =
@@ -57,23 +92,6 @@ const PopupChat = () => {
         containerMessages?.current?.scrollHeight
       );
     }
-
-    /* pesan otomatis buat tes */
-    if (messages[messages.length - 1]?.isCurrentUser) {
-      setTimeout(() => {
-        setMessages((int) => [
-          ...int,
-          {
-            message: (Math.random() + 1).toString(36).substring(7),
-            isCurrentUser: false,
-          },
-          {
-            message: `Masih terlalu dini untuk mengetahui apakah vaksin-vaksin COVID-19 akan memberikan perlindungan jangka panjang. Jawaban pertanyaan ini perlu diteliti lebih lanjut. Namun, kabar baiknya adalah data yang ada mengindikasikan bahwa sebagian besar orang yang telah sembuh dari COVID-19 memiliki respons sistem imun yang memberikan setidaknya perlindungan tertentu terhadap infeksi ulang – meskipun kita masih mempelajari seberapa kuat perlindungan ini, dan seberapa lama perlindungan ini bertahan.\n\nBelum pasti juga berapa dosis dari suatu vaksin COVID-19 yang akan diperlukan. Sebagian besar vaksin COVID-19 yang sedang dites saat ini menggunakan dua dosis.`,
-            isCurrentUser: false,
-          },
-        ]);
-      }, 500);
-    }
   }, [messages]);
 
   const handleSubmitMessage = (e) => {
@@ -85,6 +103,12 @@ const PopupChat = () => {
       ...int,
       { message: currentMessage, isCurrentUser: true },
     ]);
+
+    setSecond(300);
+
+    socket.emit("question", {
+      data: currentMessage,
+    });
 
     inputMessage.current.value = "";
     inputMessage?.current?.focus();
@@ -137,7 +161,11 @@ const PopupChat = () => {
           {!isActive && (
             <div className="alert-disconnect">
               <div>
-                <button type="button" className="btn-link-disconnect">
+                <button
+                  type="button"
+                  className="btn-link-disconnect"
+                  onClick={reconnectingSocket}
+                >
                   Hubungkan kembali
                 </button>
               </div>
@@ -152,15 +180,20 @@ const PopupChat = () => {
                 id="message"
                 name="message"
                 className="message-input"
-                placeholder="Tuliskan pesan..."
+                placeholder="Tuliskan pertanyaan..."
                 ref={inputMessage}
                 value={currentMessage}
                 onKeyPress={handleKeyDown}
                 onChange={(e) => setCurrentMessage(e.currentTarget.value)}
+                disabled={!isActive}
               />
             </div>
             <div className="child right">
-              <button type="submit" className="btn-send-message">
+              <button
+                type="submit"
+                className="btn-send-message"
+                disabled={!isActive}
+              >
                 <i className="fas fa-paper-plane" />
               </button>
             </div>

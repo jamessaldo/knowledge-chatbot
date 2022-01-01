@@ -1,24 +1,19 @@
 # #!/usr/bin/env python3
 
-from flask import session, copy_current_request_context, render_template, request
-from flask_socketio import SocketIO, send, disconnect
+from flask import session, copy_current_request_context, request
+from flask_socketio import SocketIO, send, disconnect, emit
 from app import create_app
 from threading import Lock
 import os
 import requests
 import json
-from datetime import timedelta
 
 thread = None
 thread_lock = Lock()
 app = create_app()
 
 clients = {}
-socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins='*', ping_timeout=10, ping_interval=5, logging=True, engineio_logger=True)
-
-@app.route('/')
-def index():
-    return render_template('index.html', async_mode=socketio.async_mode)
+socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins='*', logging=True, engineio_logger=True)
 
 @socketio.on('connect_request')
 def connect_request(message):
@@ -44,7 +39,7 @@ def disconnect_request():
         disconnect()
 
     session['receive_count'] = session.get('receive_count', 0) + 1
-    send({'data': 'Disconnected!', 'count': session['receive_count']},
+    emit("disconnect", {'data': 'Disconnected!', 'count': session['receive_count']},
          callback=can_disconnect)
 
 if __name__ == '__main__':
