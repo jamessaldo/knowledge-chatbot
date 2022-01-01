@@ -1,9 +1,9 @@
-/* eslint-disable */
 import React, { useState, useRef, useEffect } from "react";
 import io from "socket.io-client";
 import MessageBubble from "./components/message-bubble";
 
-const ENDPOINT = "http://127.0.0.1:5001";
+const ENDPOINT =
+  process.env.REACT_APP_WEBSOCKET_ENDPOINT ?? "http://127.0.0.1:5001";
 
 const PopupChat = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(true);
@@ -38,7 +38,7 @@ const PopupChat = () => {
 
     return () => clearInterval(timer);
   }, [second]);
-  console.log(second);
+
   const togglePopupChatbot = () => setIsPopupOpen(!isPopupOpen);
 
   useEffect(() => {

@@ -2,7 +2,7 @@ version: "3.8"
 services:
   knowledge.svc-flask:
     container_name: knowledge.svc-flask
-    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-flask:1.0.6
+    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-flask:1.0.7
     working_dir: /app
     environment:
       - APP_HOST=0.0.0.0
@@ -16,7 +16,7 @@ services:
       - 5000:5000
     command: ["sh", "run.sh", "server", "development"]
   knowledge.svc-websocket:
-    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-websocket:1.0.2
+    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-websocket:1.0.3
     working_dir: /app
     environment:
       - APP_HOST=0.0.0.0
@@ -38,14 +38,15 @@ services:
     working_dir: /app
     environment:
       - APP_HOST=0.0.0.0
-      - APP_PORT=3000
-      - FLASK_DEBUG=True
-      - ACL=127.0.0.1/24, 103.77.104.0/24
-      - PYTHONPATH=/workspace
-      - SVC_FLASK_ENDPOINT=http://knowledge.svc-flask:5000
+      - REACT_APP_PORT=3000
+      - REACT_APP_WEBSOCKET_ENDPOINT=http://knowledge.svc-websocket:5001
       - SECRET_KEY=604866851210ea5fcd966b8e3f44f985
     volumes:
       - "/app/node_modules"
     ports:
       - 3000:3000
+    depends_on:
+      - knowledge.svc-websocket
+    links:
+      - knowledge.svc-websocket
     command: ["yarn", "start"]
