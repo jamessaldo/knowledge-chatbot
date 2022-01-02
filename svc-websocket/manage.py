@@ -1,6 +1,6 @@
 # #!/usr/bin/env python3
 
-from flask import session, copy_current_request_context, request
+from flask import session, copy_current_request_context
 from flask_socketio import SocketIO, send, disconnect, emit
 from app import create_app
 from threading import Lock
@@ -17,12 +17,10 @@ socketio = SocketIO(app, async_mode='eventlet', logging=True, engineio_logger=Tr
 
 @socketio.on('connect_request')
 def connect_request(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
     send({'answer': message['data'],'score': 2,'question': ""})
 
 @socketio.on('question')
 def question(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
     payload = dict(question=message['data'], auth=os.getenv("SECRET_KEY"))
     r = requests.post(os.getenv("SVC_FLASK_ENDPOINT")+'/api/knowledge', data=payload)
     send({
@@ -37,7 +35,6 @@ def disconnect_request():
     def can_disconnect():
         disconnect()
 
-    session['receive_count'] = session.get('receive_count', 0) + 1
     emit("disconnect", {'answer': 'Disconnected!'},
          callback=can_disconnect)
 

@@ -18,7 +18,7 @@ services:
       - app-network
     command: ["sh", "run.sh", "server", "development"]
   knowledge.svc-websocket:
-    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-websocket:1.0.5
+    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-websocket:1.0.6
     working_dir: /app
     environment:
       - APP_HOST=0.0.0.0
