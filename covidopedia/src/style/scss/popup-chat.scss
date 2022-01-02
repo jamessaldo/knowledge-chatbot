@@ -35,11 +35,6 @@
   display: flex;
   justify-content: space-between;
   border-radius: 8px 8px 0 0;
-  
-  .header-popup {
-    display: flex;
-    justify-content: space-between;
-  }
 
   .title-popup {
     margin-left: 8px;
@@ -49,20 +44,6 @@
     margin-top: 2px;
     color: white;
     font-weight: 700;
-  }
-
-  .icon-popup {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin-bottom: 0px;
-    margin-top: 1px;
-    &.online {
-      background-color: greenyellow;
-    }
-    &.offline {
-      background-color: grey;
-    }
   }
 
   .btn-close-popup {

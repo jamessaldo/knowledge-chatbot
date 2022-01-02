@@ -145,14 +145,9 @@ const PopupChat = () => {
       {isPopupOpen ? (
         <div className="container-popup-chatbot position-relative">
           <div className="header-popup-chatbot">
-            <div className="header-popup">
-              <div
-                className={`icon-popup ${isActive ? "online" : "offline"}`}
-              />
-              <h1 className="title-popup">
-                Tanyakan pada Copi terkait Covid-19!
-              </h1>
-            </div>
+            <h1 className="title-popup">
+              Tanyakan pada Copi terkait Covid-19!
+            </h1>
             <button
               className="btn-close-popup"
               type="button"
