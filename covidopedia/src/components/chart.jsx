@@ -205,27 +205,31 @@ const Charts = () => {
               <div className="row mt-20">
                 <div className="col-12 col-sm-5 card-detail-vaccine left d-flex flex-column">
                   <span>
-                    {vaccine?.total?.jumlah_vaksinasi_1.toLocaleString("en-US")}
+                    {vaccine?.total?.jumlah_vaksinasi_1.toLocaleString(
+                      "en-US"
+                    ) ?? (165900887).toLocaleString("en-US")}
                   </span>
                   <span>Vaksinasi Ke-1</span>
                   <span>
                     +
                     {vaccine?.penambahan?.jumlah_vaksinasi_1?.toLocaleString(
                       "en-US"
-                    )}
+                    ) ?? (4039665).toLocaleString("en-US")}
                   </span>
                   <i className="fa fa-syringe" />
                 </div>
                 <div className="col-12 col-sm-5 card-detail-vaccine right d-flex flex-column">
                   <span>
-                    {vaccine?.total?.jumlah_vaksinasi_2.toLocaleString("en-US")}
+                    {vaccine?.total?.jumlah_vaksinasi_2.toLocaleString(
+                      "en-US"
+                    ) ?? (114103362).toLocaleString("en-US")}
                   </span>
                   <span>Vaksinasi Ke-2</span>
                   <span>
                     +
                     {vaccine?.penambahan?.jumlah_vaksinasi_2?.toLocaleString(
                       "en-US"
-                    )}
+                    ) ?? (72924).toLocaleString("en-US")}
                   </span>
                   <i className="fa fa-syringe" />
                 </div>

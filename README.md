@@ -14,7 +14,7 @@ Meanwhile, I'm also using levenshtein distance algorithm for calculating the sim
 docker-compose up
 ```
 
-## Here's are demo videos about this app:
+## Here are some demo videos about this app:
 
 ![Demo 1](documentation/demo1.mov)
 ![Demo 2](documentation/demo2.mov)
