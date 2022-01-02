@@ -2,10 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import io from "socket.io-client";
 import MessageBubble from "./components/message-bubble";
 
-const ENDPOINT =
-  window.location.hostname === "127.0.0.1"
-    ? "http://127.0.0.1:5001"
-    : `https://${window.location.hostname}:5001`;
+const ENDPOINT = process.env.REACT_APP_WEBSOCKET_ENDPOINT ?? "http://127.0.0.1:5001";
 
 const PopupChat = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(true);
@@ -64,7 +61,8 @@ const PopupChat = () => {
         setMessages((messages) => [
           ...messages,
           {
-            message: "Oops! Sepertinya anda terputus :(",
+            message: "Oops! Sepertinya kamu tidak aktif/terputus. :(",
+            score: 2,
             isCurrentUser: false,
           },
         ]);

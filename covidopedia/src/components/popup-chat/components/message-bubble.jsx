@@ -21,7 +21,11 @@ const MessageBubble = ({
         </div>
       )}
       <div className="bubble-message">
-        <span className="text-message">{data.message}</span>
+        <span className="text-message">
+          {!isCurrentUser && data.score > 0.5 && data.score !== 2
+            ? `Pertanyaan:\n\n${data.question} \n\nJawaban:\n\n${data.message}`
+            : data.message}
+        </span>
         {data.score <= 0.5 && (
           <>
             <br />

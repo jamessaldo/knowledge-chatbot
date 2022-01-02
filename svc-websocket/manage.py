@@ -18,7 +18,7 @@ socketio = SocketIO(app, async_mode='eventlet', logging=True, engineio_logger=Tr
 @socketio.on('connect_request')
 def connect_request(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
-    send({'answer': message['data'],'score': 1,'question': ""})
+    send({'answer': message['data'],'score': 2,'question': ""})
 
 @socketio.on('question')
 def question(message):
