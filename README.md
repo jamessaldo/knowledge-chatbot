@@ -17,4 +17,4 @@ docker-compose up
 ## Here's are demo videos about this app:
 
 ![Demo 1](documentation/demo1.mov)
-![Demo 2](documentation/demo2.mp4)
+![Demo 2](documentation/demo2.mov)
