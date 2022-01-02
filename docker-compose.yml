@@ -14,6 +14,8 @@ services:
       - ./svc-flask:/app
     ports:
       - 5000:5000
+    networks:
+      - app-network
     command: ["sh", "run.sh", "server", "development"]
   knowledge.svc-websocket:
     image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/svc-websocket:1.0.3
@@ -30,16 +32,16 @@ services:
       - 5001:5001
     depends_on:
       - knowledge.svc-flask
-    links:
-      - knowledge.svc-flask
+    networks:
+      - app-network
     command: ["sh", "run.sh", "server", "development"]
   knowledge.covidopedia:
-    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/covidopedia:1.0.1
+    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/covidopedia:1.0.3
     working_dir: /app
     environment:
       - APP_HOST=0.0.0.0
       - REACT_APP_PORT=3000
-      - REACT_APP_WEBSOCKET_ENDPOINT=http://knowledge.svc-websocket:5001
+      - REACT_APP_WEBSOCKET_ENDPOINT=http://127.0.0.1:5001
       - SECRET_KEY=604866851210ea5fcd966b8e3f44f985
     volumes:
       - "/app/node_modules"
@@ -47,6 +49,9 @@ services:
       - 3000:3000
     depends_on:
       - knowledge.svc-websocket
-    links:
-      - knowledge.svc-websocket
+    networks:
+      - app-network
     command: ["yarn", "start"]
+networks:
+  app-network:
+    driver: bridge
