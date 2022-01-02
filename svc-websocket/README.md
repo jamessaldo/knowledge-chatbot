@@ -1,7 +1,3 @@
-# BIZNETGIO PYTHON BOILERPLATE
-
-# DEVELOPER SETTING
-
 ## VIRTUALENV
 Setup app in virtual environment python3
 ```
