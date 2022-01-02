@@ -1,10 +1,11 @@
 import React from "react";
 
 const MessageBubble = ({
-  message,
+  data,
   isCurrentUser,
   hasSameSiblingBefore,
   hasSameSiblingAfter,
+  handleRecommendation,
 }) => {
   return (
     <div
@@ -20,7 +21,22 @@ const MessageBubble = ({
         </div>
       )}
       <div className="bubble-message">
-        <span className="text-message">{message}</span>
+        <span className="text-message">{data.message}</span>
+        {data.score <= 0.5 && (
+          <>
+            <br />
+            <br />
+            <div>
+              <button
+                type="button"
+                className="btn-link recommendation"
+                onClick={() => handleRecommendation(data.question)}
+              >
+                {data.question}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

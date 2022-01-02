@@ -116,7 +116,9 @@ const Charts = () => {
       url:
         "https://data.covid19.go.id/public/api/pemeriksaan-vaksinasi.json?_=" +
         new Date().getTime(),
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+      },
       method: "get",
     }).then((result) => {
       setVaccine(result.data.vaksinasi);

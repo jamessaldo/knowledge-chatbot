@@ -3,20 +3,22 @@ import io from "socket.io-client";
 import MessageBubble from "./components/message-bubble";
 
 const ENDPOINT =
-  process.env.REACT_APP_WEBSOCKET_ENDPOINT ?? "http://127.0.0.1:5001";
+  window.location.hostname === "127.0.0.1"
+    ? "http://127.0.0.1:5001"
+    : `https://${window.location.hostname}:5001`;
 
 const PopupChat = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(true);
   const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isActive, setIsActive] = useState(true);
-  const [second, setSecond] = useState(300);
+  const [second, setSecond] = useState(180);
   const inputMessage = useRef(null);
   const containerMessages = useRef(null);
   const [socket, setSocket] = useState(null);
 
   const reconnectingSocket = () => {
-    setSecond(300);
+    setSecond(180);
     setSocket(io(ENDPOINT));
   };
 
@@ -72,7 +74,9 @@ const PopupChat = () => {
         setMessages((messages) => [
           ...messages,
           {
-            message: message.data,
+            message: message.answer,
+            question: message.question,
+            score: message.score,
             isCurrentUser: false,
           },
         ]);
@@ -104,10 +108,24 @@ const PopupChat = () => {
       { message: currentMessage, isCurrentUser: true },
     ]);
 
-    setSecond(300);
+    setSecond(180);
 
     socket.emit("question", {
       data: currentMessage,
+    });
+
+    inputMessage.current.value = "";
+    inputMessage?.current?.focus();
+    setCurrentMessage("");
+  };
+
+  const handleRecommendationMessage = (question) => {
+    setMessages((int) => [...int, { message: question, isCurrentUser: true }]);
+
+    setSecond(180);
+
+    socket.emit("question", {
+      data: question,
     });
 
     inputMessage.current.value = "";
@@ -127,9 +145,14 @@ const PopupChat = () => {
       {isPopupOpen ? (
         <div className="container-popup-chatbot position-relative">
           <div className="header-popup-chatbot">
-            <h1 className="title-popup">
-              Tanyakan pada Copi pertanyaan terkait Covid-19
-            </h1>
+            <div className="header-popup">
+              <div
+                className={`icon-popup ${isActive ? "online" : "offline"}`}
+              />
+              <h1 className="title-popup">
+                Tanyakan pada Copi terkait Covid-19!
+              </h1>
+            </div>
             <button
               className="btn-close-popup"
               type="button"
@@ -142,18 +165,19 @@ const PopupChat = () => {
             className={`messages-box ${!isActive ? "pb-85" : ""}`}
             ref={containerMessages}
           >
-            {messages.map(({ isCurrentUser, message }, index) => {
+            {messages.map((message, index) => {
               return (
                 <MessageBubble
                   key={index}
-                  message={message}
-                  isCurrentUser={isCurrentUser}
+                  data={message}
+                  isCurrentUser={message.isCurrentUser}
                   hasSameSiblingAfter={
-                    messages[index + 1]?.isCurrentUser === isCurrentUser
+                    messages[index + 1]?.isCurrentUser === message.isCurrentUser
                   }
                   hasSameSiblingBefore={
-                    messages[index - 1]?.isCurrentUser === isCurrentUser
+                    messages[index - 1]?.isCurrentUser === message.isCurrentUser
                   }
+                  handleRecommendation={handleRecommendationMessage}
                 />
               );
             })}
@@ -163,7 +187,7 @@ const PopupChat = () => {
               <div>
                 <button
                   type="button"
-                  className="btn-link-disconnect"
+                  className="btn-link disconnect"
                   onClick={reconnectingSocket}
                 >
                   Hubungkan kembali

@@ -13,24 +13,23 @@ thread_lock = Lock()
 app = create_app()
 
 clients = {}
-socketio = SocketIO(app, async_mode='eventlet', cors_allowed_origins='*', logging=True, engineio_logger=True)
+socketio = SocketIO(app, async_mode='eventlet', logging=True, engineio_logger=True, cors_allowed_origins="*")
 
 @socketio.on('connect_request')
 def connect_request(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
-    send({'data': message['data'], 'count': session['receive_count']})
+    send({'answer': message['data'],'score': 1,'question': ""})
 
 @socketio.on('question')
 def question(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     payload = dict(question=message['data'], auth=os.getenv("SECRET_KEY"))
     r = requests.post(os.getenv("SVC_FLASK_ENDPOINT")+'/api/knowledge', data=payload)
-    if isinstance(r.json()['data']['answer'],str):
-        send({'data': r.json()['data']['answer'], 'count': session['receive_count']})
-    else:
-        for row in r.json()['data']['answer']:
-            send({'data': row, 'count': session['receive_count']})
-            session['receive_count'] = session.get('receive_count', 0) + 1
+    send({
+            'question': r.json()['data']['prediction'],
+            'answer': r.json()['data']['answer'],
+            'score': r.json()['data']['score']
+        })
 
 @socketio.on('disconnect_request')
 def disconnect_request():
@@ -39,7 +38,7 @@ def disconnect_request():
         disconnect()
 
     session['receive_count'] = session.get('receive_count', 0) + 1
-    emit("disconnect", {'data': 'Disconnected!', 'count': session['receive_count']},
+    emit("disconnect", {'answer': 'Disconnected!'},
          callback=can_disconnect)
 
 if __name__ == '__main__':

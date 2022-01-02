@@ -35,13 +35,34 @@
   display: flex;
   justify-content: space-between;
   border-radius: 8px 8px 0 0;
+  
+  .header-popup {
+    display: flex;
+    justify-content: space-between;
+  }
 
   .title-popup {
+    margin-left: 8px;
     margin-right: 15px;
     font-size: smaller;
-    margin-bottom: 0;
+    margin-bottom: 0px;
+    margin-top: 2px;
     color: white;
     font-weight: 700;
+  }
+
+  .icon-popup {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-bottom: 0px;
+    margin-top: 1px;
+    &.online {
+      background-color: greenyellow;
+    }
+    &.offline {
+      background-color: grey;
+    }
   }
 
   .btn-close-popup {
@@ -81,6 +102,7 @@
     }
 
     .img-avatar {
+      margin-top:15px;
       width: 33px;
       height: 33px;
       border-radius: 50%;
@@ -97,6 +119,7 @@
       color: black;
       border-radius: 7px;
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      max-width:200px;
 
       .text-message {
         font-family: "Spline Sans", sans-serif;
@@ -172,20 +195,26 @@
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+}
 
-    .btn-link-disconnect {
-      border: none;
-      background: none;
-      font-size: smaller;
-      font-weight: 500;
-      padding: 5px;
-      color: black;
-      font-family: "Lato", sans-serif;
-      text-decoration: underline;
-      &:focus {
-        outline: none;
-      }
-    }
+.btn-link {
+  border: none;
+  background: none;
+  font-size: smaller;
+  color: black;
+  font-family: "Lato", sans-serif;
+  text-decoration: underline;
+  &:focus {
+    outline: none;
+  }
+  &.disconnect {
+    padding: 5px;
+    font-weight: 500;
+  }
+  &.recommendation {
+    font-weight: 600;
+    padding-left: 0px;
   }
 }
 
