@@ -36,7 +36,7 @@ services:
       - app-network
     command: ["sh", "run.sh", "server", "development"]
   knowledge.covidopedia:
-    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/covidopedia:1.0.4
+    image: registry.gitlab.com/ghozyghlmlaff/knowledge-chatbot/covidopedia:1.0.3
     working_dir: /app
     environment:
       - APP_HOST=0.0.0.0
